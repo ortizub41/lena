@@ -19,7 +19,6 @@ class TestLena(unittest.TestCase):
         pass
 
     def test_something(self):
-        assert(lena.hello_world())
         pass
 
     def tearDown(self):
