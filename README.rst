@@ -16,6 +16,3 @@ Python Boilerplate contains all the boilerplate you need to create a Python pack
 
 Features
 --------
-
-* TODO
-  add Travis-CI
