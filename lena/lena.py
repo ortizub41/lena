@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from numpy import dtype, uint8
 
 class lena(object):
@@ -8,7 +8,7 @@ class lena(object):
     # Open the file for reading
     def read_file(self, my_file):
         stream = open(my_file, 'rb')
-        img = numpy.fromfile(stream, dtype=(uint8, 3))
+        img = np.fromfile(stream, dtype=(uint8, 3))
         return img
 
     # Create a dither matrix
@@ -32,7 +32,7 @@ class lena(object):
             dither.append(second)
             dither.append(third)
             dither.append(fourth)
-        dither = numpy.reshape(dither, (-1, 512))
+        dither = np.reshape(dither, (-1, 512))
         return dither
 
     # Transform the image
@@ -44,14 +44,14 @@ class lena(object):
                     quantized_array.append(255)
                 else:
                     quantized_array.append(0)
-        temp_array = numpy.zeros(len(quantized_array), dtype=(uint8))
+        temp_array = np.zeros(len(quantized_array), dtype=(uint8))
         for i in range(len(quantized_array)):
             temp_array[i] = quantized_array[i]
         return temp_array
 
     # Combine all three red, green and blue
     def combine_rgb(self, r, g, b):
-        rgb = numpy.zeros(len(r), dtype=(uint8, 3))
+        rgb = np.zeros(len(r), dtype=(uint8, 3))
         for i in range(len(r)):
             rgb[i][0] = r[i]
             rgb[i][1] = g[i]
@@ -61,15 +61,15 @@ class lena(object):
     # Scale dither matrix from 0 to 255 (8 bit) red and green
     # Add 1 to the dither multiply by 16 and subtract 1
     def scaled_dither(self, dither):
-        dither = numpy.add(dither, 1)
-        dither = numpy.dot(dither, 16)
-        dither = numpy.add(dither, -1)
+        dither = np.add(dither, 1)
+        dither = np.dot(dither, 16)
+        dither = np.add(dither, -1)
         return dither
 
 
 if __name__ == '__main__':
     # 4 X 4 dither matrix from the book
-    pallete = numpy.array([
+    pallete = np.array([
         [0, 8, 2, 10],
         [12, 4, 14, 6],
         [3, 11, 1, 9],
@@ -85,9 +85,9 @@ if __name__ == '__main__':
     img = lena.read_file(file_to_open)
 
     # Initialize red, green, blue arrays with zeros
-    red = numpy.zeros(len(img), dtype=(uint8))
-    green = numpy.zeros(len(img), dtype=(uint8))
-    blue = numpy.zeros(len(img), dtype=(uint8))
+    red = np.zeros(len(img), dtype=(uint8))
+    green = np.zeros(len(img), dtype=(uint8))
+    blue = np.zeros(len(img), dtype=(uint8))
 
     # Create the three channels for red, green and blue
     for i in range(len(img)):
@@ -96,9 +96,9 @@ if __name__ == '__main__':
         blue[i] = img[i][2]   # Blue channel
 
     # Convert linear arrays to 512 X 512
-    red = numpy.reshape(red, (-1, 512))
-    green = numpy.reshape(green, (-1, 512))
-    blue = numpy.reshape(blue, (-1, 512))
+    red = np.reshape(red, (-1, 512))
+    green = np.reshape(green, (-1, 512))
+    blue = np.reshape(blue, (-1, 512))
 
     # Populate pallete along rows
     first = lena.dither_matrix_row(0, pallete)
